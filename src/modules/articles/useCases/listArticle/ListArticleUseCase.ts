@@ -1,10 +1,24 @@
-import { IArticlesRepository } from "../../repositories/IArticlesRepository";
+import { IArticle } from "@modules/articles/infra/mongoose/entities/IArticle";
+import { IArticlesRepository } from "@modules/articles/repositories/IArticlesRepository";
+import { inject, injectable } from "tsyringe";
 
+import { AppError } from "@shared/errors/AppError";
+
+@injectable()
 class ListArticleUseCase {
-    constructor(private readonly articleRepository: IArticlesRepository) {}
+    constructor(
+        @inject("ArticleRepository")
+        private readonly articleRepository: IArticlesRepository
+    ) {}
 
-    async execute() {
+    async execute(): Promise<IArticle[]> {
         const response = await this.articleRepository.listArticle();
+
+        if (response.length <= 0) {
+            throw new AppError(
+                "There are no articles registered in the database!"
+            );
+        }
 
         return response;
     }

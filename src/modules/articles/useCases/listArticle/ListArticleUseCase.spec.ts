@@ -1,6 +1,9 @@
-import { ICreateArticleDTO } from "modules/articles/dtos/ICreateArticleDTO";
+import { ICreateArticleDTO } from "@modules/articles/dtos/ICreateArticleDTO";
+import { ArticleRepositoryInMemory } from "@modules/articles/repositories/in-memory/ArticleRepositoryInMemory";
+import { v4 as uuidV4 } from "uuid";
 
-import { ArticleRepositoryInMemory } from "../../repositories/in-memory/ArticleRepositoryInMemory";
+import { AppError } from "@shared/errors/AppError";
+
 import { ListArticleUseCase } from "./ListArticleUseCase";
 
 describe("List Article", () => {
@@ -14,6 +17,7 @@ describe("List Article", () => {
 
     const makeFakeArticle: ICreateArticleDTO[] = [
         {
+            id: uuidV4(),
             title: "NASA to Host Briefings to Preview Artemis I Moon Mission",
             url: "http://www.nasa.gov/press-release/nasa-to-host-briefings-to-preview-artemis-i-moon-mission",
             imageUrl:
@@ -37,6 +41,7 @@ describe("List Article", () => {
             ],
         },
         {
+            id: uuidV4(),
             title: "NASA to Host Briefings to Preview Artemis I Moon Mission 2",
             url: "http://www.nasa.gov/press-release/nasa-to-host-briefings-to-preview-artemis-i-moon-mission",
             imageUrl:
@@ -60,6 +65,7 @@ describe("List Article", () => {
             ],
         },
         {
+            id: uuidV4(),
             title: "NASA to Host Briefings to Preview Artemis I Moon Mission 3",
             url: "http://www.nasa.gov/press-release/nasa-to-host-briefings-to-preview-artemis-i-moon-mission",
             imageUrl:
@@ -94,5 +100,9 @@ describe("List Article", () => {
         expect(response).toHaveLength(3);
         expect(response[1]).toBeTruthy();
         expect(response[1]).toHaveProperty("id");
+    });
+
+    it("should be able returns error if not there is register articles", async () => {
+        await expect(listArticleUseCase.execute()).rejects.toThrow(AppError);
     });
 });

@@ -1,8 +1,8 @@
-import { IProperties } from "./IProperties";
+import { IProperties } from "@modules/articles/dtos/IProperties";
 
-interface ICreateArticleDTO {
+interface IArticle {
     id?: string;
-    featured: boolean;
+    featured?: boolean;
     title: string;
     url: string;
     imageUrl: string;
@@ -13,4 +13,4 @@ interface ICreateArticleDTO {
     events?: IProperties[];
 }
 
-export { ICreateArticleDTO };
+export { IArticle };

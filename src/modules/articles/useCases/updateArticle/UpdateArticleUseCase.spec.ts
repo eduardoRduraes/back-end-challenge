@@ -3,15 +3,15 @@ import { ArticleRepositoryInMemory } from "@modules/articles/repositories/in-mem
 
 import { AppError } from "@shared/errors/AppError";
 
-import { CreateArticleUseCase } from "./CreateArticleUseCase";
+import { UpdateArticleUseCase } from "./UpdateArticleUseCase";
 
-describe("Create Article", () => {
+describe("Update Article", () => {
     let articleRepositoryInMemory: ArticleRepositoryInMemory;
-    let createArticleUseCase: CreateArticleUseCase;
+    let updateArticleUseCase: UpdateArticleUseCase;
 
     beforeEach(() => {
         articleRepositoryInMemory = new ArticleRepositoryInMemory();
-        createArticleUseCase = new CreateArticleUseCase(
+        updateArticleUseCase = new UpdateArticleUseCase(
             articleRepositoryInMemory
         );
     });
@@ -40,17 +40,38 @@ describe("Create Article", () => {
         ],
     });
 
-    it("should be able to create a new article", async () => {
-        const response = await createArticleUseCase.execute(makeFakeArticle());
+    const makeFakeArticleUpdate = {
+        id: "",
+        title: "NASA to Host Briefings to Preview Artemis I Moon Mission 1",
+        url: "http://www.nasa.gov/press-release/nasa-to-host-briefings-to-preview-artemis-i-moon-mission",
+        imageUrl:
+            "https://www.nasa.gov/sites/default/files/thumbnails/image/52200283798_d6ea9d7db6_k.jpeg?itok=UJgfcgGg",
+        newsSite: "NASA",
+        summary:
+            "NASA will host a pair of briefings on Wednesday, Aug. 3, and Friday, Aug. 5, to preview the upcoming Artemis I lunar mission.",
+        publishedAt: "2022-07-30T22:08:20.000Z",
+        featured: true,
+        launches: [],
+        events: [],
+    };
+
+    it("should be able to update article", async () => {
+        const { id } = await articleRepositoryInMemory.create(
+            makeFakeArticle()
+        );
+
+        makeFakeArticleUpdate.id = id;
+
+        const response = await updateArticleUseCase.execute(
+            makeFakeArticleUpdate
+        );
 
         expect(response).toHaveProperty("id");
     });
 
-    it("should not be able to create a article with exits title", async () => {
-        await createArticleUseCase.execute(makeFakeArticle());
-
+    it("should not be able update if article is not exists", async () => {
         await expect(
-            createArticleUseCase.execute(makeFakeArticle())
-        ).rejects.toBeInstanceOf(AppError);
+            updateArticleUseCase.execute(makeFakeArticleUpdate)
+        ).rejects.toThrow(AppError);
     });
 });

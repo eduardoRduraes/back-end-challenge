@@ -1,12 +1,13 @@
-import { ICreateArticleDTO } from "modules/articles/dtos/ICreateArticleDTO";
+import { ICreateArticleDTO } from "@modules/articles/dtos/ICreateArticleDTO";
+import { IArticle } from "@modules/articles/infra/mongoose/entities/IArticle";
 
-import { Article } from "../../infra/mongoose/entities/Article";
 import { IArticlesRepository } from "../IArticlesRepository";
 
 class ArticleRepositoryInMemory implements IArticlesRepository {
-    private articles: Article[] = [];
+    private articles: IArticle[] = [];
 
     async create({
+        id,
         featured,
         title,
         url,
@@ -16,8 +17,9 @@ class ArticleRepositoryInMemory implements IArticlesRepository {
         publishedAt,
         launches,
         events,
-    }: ICreateArticleDTO): Promise<Article> {
-        const data = Object.assign(new Article(), {
+    }: ICreateArticleDTO): Promise<IArticle> {
+        const data: IArticle = {
+            id,
             featured,
             title,
             url,
@@ -27,17 +29,17 @@ class ArticleRepositoryInMemory implements IArticlesRepository {
             publishedAt,
             launches,
             events,
-        });
+        };
 
         this.articles = [data, ...this.articles];
         return data;
     }
 
-    async findByTitle(title: string): Promise<Article> {
+    async findByTitle(title: string): Promise<IArticle> {
         return this.articles.find((article) => article.title === title);
     }
 
-    async findById(id: string): Promise<Article> {
+    async findById(id: string): Promise<IArticle> {
         return this.articles.find((article) => article.id === id);
     }
 
@@ -57,10 +59,10 @@ class ArticleRepositoryInMemory implements IArticlesRepository {
         publishedAt,
         launches,
         events,
-    }: Article): Promise<Article> {
+    }: IArticle): Promise<IArticle> {
         const index = this.articles.findIndex((f) => f.id === id);
 
-        const data = Object.assign(new Article(), {
+        const data = {
             id,
             featured,
             title,
@@ -71,13 +73,13 @@ class ArticleRepositoryInMemory implements IArticlesRepository {
             publishedAt,
             launches,
             events,
-        });
+        };
 
         this.articles[index] = data;
         return data;
     }
 
-    async listArticle(): Promise<Article[]> {
+    async listArticle(): Promise<IArticle[]> {
         return this.articles;
     }
 }

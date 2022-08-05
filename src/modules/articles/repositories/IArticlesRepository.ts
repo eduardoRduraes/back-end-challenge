@@ -1,5 +1,5 @@
 import { ICreateArticleDTO } from "../dtos/ICreateArticleDTO";
-import { Article } from "../infra/mongoose/entities/Article";
+import { IArticle } from "../infra/mongoose/entities/IArticle";
 
 interface IArticlesRepository {
     create({
@@ -12,11 +12,11 @@ interface IArticlesRepository {
         publishedAt,
         launches,
         events,
-    }: ICreateArticleDTO): Promise<Article>;
+    }: ICreateArticleDTO): Promise<IArticle>;
 
-    findById(id: string): Promise<Article>;
+    findById(id: string): Promise<IArticle>;
 
-    findByTitle(title: string): Promise<Article>;
+    findByTitle(title: string): Promise<IArticle>;
 
     deleteArticle(id: string): Promise<void>;
 
@@ -31,9 +31,9 @@ interface IArticlesRepository {
         publishedAt,
         launches,
         events,
-    }: Article): Promise<Article>;
+    }: IArticle): Promise<IArticle>;
 
-    listArticle(): Promise<Article[]>;
+    listArticle(): Promise<IArticle[]>;
 }
 
 export { IArticlesRepository };

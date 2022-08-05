@@ -1,6 +1,6 @@
-import { ICreateArticleDTO } from "modules/articles/dtos/ICreateArticleDTO";
+import { ICreateArticleDTO } from "@modules/articles/dtos/ICreateArticleDTO";
+import { ArticleRepositoryInMemory } from "@modules/articles/repositories/in-memory/ArticleRepositoryInMemory";
 
-import { ArticleRepositoryInMemory } from "../../repositories/in-memory/ArticleRepositoryInMemory";
 import { DeleteArticleUseCase } from "./DeleteArticleUseCase";
 
 describe("Delete Article", () => {
@@ -50,8 +50,6 @@ describe("Delete Article", () => {
     });
 
     it("should be able returns error if article is not exists!", async () => {
-        expect(deleteArticleUseCase.execute("id")).rejects.toBeInstanceOf(
-            Error
-        );
+        await expect(deleteArticleUseCase.execute("id")).rejects.toThrow(Error);
     });
 });

@@ -1,22 +1,22 @@
+/* eslint-disable @typescript-eslint/ban-types */
 import { ICreateArticleDTO } from "@modules/articles/dtos/ICreateArticleDTO";
-import { ArticleRepositoryInMemory } from "@modules/articles/repositories/in-memory/ArticleRepositoryInMemory";
+import { Article } from "@modules/articles/infra/mongoose/entities/ArticleSchema";
+import request from "supertest";
 
-import { AppError } from "@shared/errors/AppError";
+import { app } from "@shared/infra/http/app";
+import { server } from "@shared/infra/http/server";
 
-import { CreateArticleUseCase } from "./CreateArticleUseCase";
-
-describe("Create Article", () => {
-    let articleRepositoryInMemory: ArticleRepositoryInMemory;
-    let createArticleUseCase: CreateArticleUseCase;
-
-    beforeEach(() => {
-        articleRepositoryInMemory = new ArticleRepositoryInMemory();
-        createArticleUseCase = new CreateArticleUseCase(
-            articleRepositoryInMemory
-        );
+describe("Create Article Controller", () => {
+    beforeEach(async () => {
+        await Article.deleteMany();
     });
 
-    const makeFakeArticle = (): ICreateArticleDTO => ({
+    afterAll(async () => {
+        await Article.db.close();
+        await server.close();
+    });
+
+    const makeFakeArticle: ICreateArticleDTO = {
         title: "NASA to Host Briefings to Preview Artemis I Moon Mission",
         url: "http://www.nasa.gov/press-release/nasa-to-host-briefings-to-preview-artemis-i-moon-mission",
         imageUrl:
@@ -38,19 +38,14 @@ describe("Create Article", () => {
                 provider: "Launch Library 1",
             },
         ],
-    });
+    };
 
     it("should be able to create a new article", async () => {
-        const response = await createArticleUseCase.execute(makeFakeArticle());
+        const response = await request(app)
+            .post("/article")
+            .send(makeFakeArticle);
 
-        expect(response).toHaveProperty("id");
-    });
-
-    it("should not be able to create a article with exits title", async () => {
-        await createArticleUseCase.execute(makeFakeArticle());
-
-        await expect(
-            createArticleUseCase.execute(makeFakeArticle())
-        ).rejects.toBeInstanceOf(AppError);
+        expect(response.body).toHaveProperty("id");
+        expect(response.status).toBe(201);
     });
 });
