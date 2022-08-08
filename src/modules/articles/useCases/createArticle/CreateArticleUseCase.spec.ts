@@ -43,6 +43,7 @@ describe("Create Article", () => {
     it("should be able to create a new article", async () => {
         const response = await createArticleUseCase.execute(makeFakeArticle());
 
+        expect(response).toBeTruthy();
         expect(response).toHaveProperty("id");
     });
 
@@ -51,6 +52,6 @@ describe("Create Article", () => {
 
         await expect(
             createArticleUseCase.execute(makeFakeArticle())
-        ).rejects.toBeInstanceOf(AppError);
+        ).rejects.toEqual(new AppError("Article already exists!"));
     });
 });

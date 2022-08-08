@@ -1,7 +1,10 @@
+import { ObjectId } from "mongoose";
+
 import { IProperties } from "./IProperties";
 
-interface ICreateArticleDTO {
-    featured: boolean;
+interface IArticleProps {
+    _id: ObjectId;
+    featured?: boolean;
     title: string;
     url: string;
     imageUrl: string;
@@ -12,4 +15,4 @@ interface ICreateArticleDTO {
     events?: IProperties[];
 }
 
-export { ICreateArticleDTO };
+export { IArticleProps };

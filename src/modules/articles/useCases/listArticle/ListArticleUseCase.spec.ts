@@ -15,9 +15,8 @@ describe("List Article", () => {
         listArticleUseCase = new ListArticleUseCase(articleRepositoryInMemory);
     });
 
-    const makeFakeArticle: ICreateArticleDTO[] = [
+    const makeFakeListArticles: ICreateArticleDTO[] = [
         {
-            id: uuidV4(),
             title: "NASA to Host Briefings to Preview Artemis I Moon Mission",
             url: "http://www.nasa.gov/press-release/nasa-to-host-briefings-to-preview-artemis-i-moon-mission",
             imageUrl:
@@ -41,7 +40,6 @@ describe("List Article", () => {
             ],
         },
         {
-            id: uuidV4(),
             title: "NASA to Host Briefings to Preview Artemis I Moon Mission 2",
             url: "http://www.nasa.gov/press-release/nasa-to-host-briefings-to-preview-artemis-i-moon-mission",
             imageUrl:
@@ -65,7 +63,6 @@ describe("List Article", () => {
             ],
         },
         {
-            id: uuidV4(),
             title: "NASA to Host Briefings to Preview Artemis I Moon Mission 3",
             url: "http://www.nasa.gov/press-release/nasa-to-host-briefings-to-preview-artemis-i-moon-mission",
             imageUrl:
@@ -91,9 +88,9 @@ describe("List Article", () => {
     ];
 
     it("should be able to list Articles register", async () => {
-        await articleRepositoryInMemory.create(makeFakeArticle[0]);
-        await articleRepositoryInMemory.create(makeFakeArticle[1]);
-        await articleRepositoryInMemory.create(makeFakeArticle[2]);
+        await articleRepositoryInMemory.create(makeFakeListArticles[0]);
+        await articleRepositoryInMemory.create(makeFakeListArticles[1]);
+        await articleRepositoryInMemory.create(makeFakeListArticles[2]);
 
         const response = await listArticleUseCase.execute();
 

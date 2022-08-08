@@ -32,7 +32,9 @@ class UpdateArticleUseCase {
             throw new AppError("Article is not exists!");
         }
 
-        const article = await this.articleRepository.updateArticle(data);
+        const article = await this.articleRepository.updateArticle(
+            data as IArticle
+        );
 
         return article;
     }

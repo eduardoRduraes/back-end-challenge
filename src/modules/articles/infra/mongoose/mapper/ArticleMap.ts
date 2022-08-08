@@ -1,3 +1,4 @@
+import { IArticleProps } from "@modules/articles/dtos/IArticleProps";
 import { instanceToInstance } from "class-transformer";
 
 import { IArticle } from "../entities/IArticle";
@@ -14,9 +15,9 @@ class ArticleMap {
         publishedAt,
         launches,
         events,
-    }): IArticle {
+    }: IArticleProps): IArticle {
         const article = instanceToInstance({
-            id: _id,
+            id: _id.toString(),
             featured,
             title,
             url,
@@ -28,7 +29,7 @@ class ArticleMap {
             events,
         });
 
-        return article;
+        return article as IArticle;
     }
 }
 

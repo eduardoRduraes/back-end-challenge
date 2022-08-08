@@ -1,4 +1,5 @@
 import { ICreateArticleDTO } from "@modules/articles/dtos/ICreateArticleDTO";
+import { IProperties } from "@modules/articles/dtos/IProperties";
 import { MongoMemoryServer } from "mongodb-memory-server";
 import mongoose from "mongoose";
 import request from "supertest";
@@ -29,7 +30,7 @@ const makeFakeArticle: ICreateArticleDTO = {
     ],
 };
 
-describe("Create Article Controller", () => {
+describe("UpdateArticleController", () => {
     beforeAll(async () => {
         const mongoServer = await MongoMemoryServer.create();
         await mongoose.connect(mongoServer.getUri());
@@ -44,22 +45,29 @@ describe("Create Article Controller", () => {
         await mongoose.connection.close();
     });
 
-    it("should be able to create a new article", async () => {
-        const response = await request(app)
+    it("should be able to find and update data from a article in the database by id", async () => {
+        const article = await request(app)
             .post("/article")
             .send(makeFakeArticle);
 
-        expect(response.body).toHaveProperty("id");
-        expect(response.status).toBe(201);
-    });
+        makeFakeArticle.title =
+            "Soyus to Host Briefings to Preview Artemis I Moon Mission 1";
 
-    it("should not be able to create a new article if already exists", async () => {
-        await request(app).post("/article").send(makeFakeArticle);
+        makeFakeArticle.events = [
+            {
+                id: "65896761-b6ca-4df3-9399-e177a360c52a",
+                provider: "Launch Library 3",
+            },
+            ...(makeFakeArticle.events as IProperties[]),
+        ];
+
         const response = await request(app)
-            .post("/article")
+            .put(`/article/${article.body.id}`)
             .send(makeFakeArticle);
 
-        expect(response.body.message).toBe("Article already exists!");
-        expect(response.status).toBe(400);
+        expect(response.body.title).toBe(
+            "Soyus to Host Briefings to Preview Artemis I Moon Mission 1"
+        );
+        expect(response.body.events).toHaveLength(2);
     });
 });

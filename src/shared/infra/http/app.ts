@@ -4,9 +4,8 @@ import "dotenv/config";
 import cors from "cors";
 import express, { NextFunction, Request, Response } from "express";
 
-import "@shared/infra/mongoose";
-import "../../container";
 import { AppError } from "@shared/errors/AppError";
+import "../../container";
 
 import { router } from "./routes";
 

@@ -29,7 +29,7 @@ const makeFakeArticle: ICreateArticleDTO = {
     ],
 };
 
-describe("Create Article Controller", () => {
+describe("Delete Article Controller", () => {
     beforeAll(async () => {
         const mongoServer = await MongoMemoryServer.create();
         await mongoose.connect(mongoServer.getUri());
@@ -44,22 +44,24 @@ describe("Create Article Controller", () => {
         await mongoose.connection.close();
     });
 
-    it("should be able to create a new article", async () => {
-        const response = await request(app)
+    it("should be able to delete an existing article", async () => {
+        const article = await request(app)
             .post("/article")
             .send(makeFakeArticle);
 
-        expect(response.body).toHaveProperty("id");
+        const response = await request(app).delete(
+            `/article/${article.body.id}`
+        );
+        expect(response.body.message).toBe("Article delete success!");
         expect(response.status).toBe(201);
     });
 
-    it("should not be able to create a new article if already exists", async () => {
-        await request(app).post("/article").send(makeFakeArticle);
-        const response = await request(app)
-            .post("/article")
-            .send(makeFakeArticle);
+    it("should be able to return an error message when there is no article corresponding to the submitted id", async () => {
+        const response = await request(app).delete(
+            `/article/${new mongoose.Types.ObjectId()}`
+        );
 
-        expect(response.body.message).toBe("Article already exists!");
+        expect(response.body.message).toBe("Article is not exists!");
         expect(response.status).toBe(400);
     });
 });

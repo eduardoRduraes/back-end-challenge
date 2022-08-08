@@ -1,15 +1,16 @@
+import { IArticleProps } from "@modules/articles/dtos/IArticleProps";
 import { ICreateArticleDTO } from "@modules/articles/dtos/ICreateArticleDTO";
 import { IArticlesRepository } from "@modules/articles/repositories/IArticlesRepository";
 
-import { Article } from "../entities/ArticleSchema";
+import { ArticleModel } from "../entities/ArticleSchema";
 import { IArticle } from "../entities/IArticle";
 import { ArticleMap } from "../mapper/ArticleMap";
 
 class ArticleRepository implements IArticlesRepository {
-    private data;
+    private data: typeof ArticleModel;
 
     constructor() {
-        this.data = Article;
+        this.data = ArticleModel;
     }
 
     async create({
@@ -23,7 +24,7 @@ class ArticleRepository implements IArticlesRepository {
         launches,
         events,
     }: ICreateArticleDTO): Promise<IArticle> {
-        const article = await this.data.create({
+        const article: IArticleProps = await this.data.create({
             featured,
             title,
             url,
@@ -40,19 +41,21 @@ class ArticleRepository implements IArticlesRepository {
 
     async findById(id: string): Promise<IArticle> {
         const article = await this.data.findById({ _id: id });
-        return article;
+        return article as IArticle;
     }
 
     async findByTitle(title: string): Promise<IArticle> {
-        const article: IArticle = await this.data.findOne({ title });
+        const article: IArticle = (await this.data.findOne({
+            title,
+        })) as IArticle;
         return article;
     }
 
     async deleteArticle(id: string): Promise<void> {
-        throw new Error("Method not implemented.");
+        await this.data.deleteOne({ _id: id });
     }
 
-    updateArticle({
+    async updateArticle({
         id,
         featured,
         title,
@@ -64,12 +67,35 @@ class ArticleRepository implements IArticlesRepository {
         launches,
         events,
     }: IArticle): Promise<IArticle> {
-        throw new Error("Method not implemented.");
+        const article = await this.data.findOneAndUpdate(
+            { _id: id },
+            {
+                featured,
+                title,
+                url,
+                imageUrl,
+                newsSite,
+                summary,
+                publishedAt,
+                launches,
+                events,
+            },
+            {
+                returnDocument: "after",
+            }
+        );
+
+        return ArticleMap.toDTO(article as IArticleProps);
     }
 
     async listArticle(): Promise<IArticle[]> {
         const articles: IArticle[] = await this.data.find();
-        return articles;
+
+        const articleMap = articles.map((a) =>
+            ArticleMap.toDTO(a as IArticleProps)
+        );
+
+        return articleMap;
     }
 }
 

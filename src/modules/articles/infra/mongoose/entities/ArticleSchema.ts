@@ -1,4 +1,4 @@
-import { mongoose } from "@shared/infra/mongoose";
+import mongoose from "mongoose";
 
 import { IArticle } from "./IArticle";
 
@@ -11,7 +11,6 @@ const ArticleSchema = new mongoose.Schema<IArticle>(
         featured: {
             type: Boolean,
             default: false,
-            require: false,
         },
         title: {
             type: String,
@@ -52,6 +51,6 @@ const ArticleSchema = new mongoose.Schema<IArticle>(
     }
 );
 
-const Article = mongoose.model("articles", ArticleSchema);
+const ArticleModel = mongoose.model<IArticle>("articles", ArticleSchema);
 
-export { Article };
+export { ArticleModel };

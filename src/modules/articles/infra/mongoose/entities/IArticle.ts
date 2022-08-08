@@ -1,7 +1,8 @@
 import { IProperties } from "@modules/articles/dtos/IProperties";
+import mongoose from "mongoose";
 
-interface IArticle {
-    id?: string;
+interface IArticle extends mongoose.Document {
+    id: string;
     featured?: boolean;
     title: string;
     url: string;
