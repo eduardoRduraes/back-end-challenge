@@ -88,8 +88,12 @@ class ArticleRepository implements IArticlesRepository {
         return ArticleMap.toDTO(article as IArticleProps);
     }
 
-    async listArticle(): Promise<IArticle[]> {
-        const articles: IArticle[] = await this.data.find();
+    async listArticle(limit?: number, skip?: number): Promise<IArticle[]> {
+        const articles: IArticle[] = await this.data
+            .find()
+            .sort("publishedAt")
+            .limit(limit as number)
+            .skip(skip as number);
 
         const articleMap = articles.map((a) =>
             ArticleMap.toDTO(a as IArticleProps)

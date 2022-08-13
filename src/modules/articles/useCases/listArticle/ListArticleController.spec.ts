@@ -92,11 +92,11 @@ describe("ListArticleController", () => {
     });
 
     it("should be able returns articles list saved", async () => {
-        await request(app).post("/article").send(makeFakeListArticles[0]);
-        await request(app).post("/article").send(makeFakeListArticles[1]);
-        await request(app).post("/article").send(makeFakeListArticles[2]);
+        await request(app).post("/articles").send(makeFakeListArticles[0]);
+        await request(app).post("/articles").send(makeFakeListArticles[1]);
+        await request(app).post("/articles").send(makeFakeListArticles[2]);
 
-        const response = await request(app).get("/article");
+        const response = await request(app).get("/articles");
 
         expect(response.body[0]).toHaveProperty("id");
         expect(response.body[0].id);
@@ -104,7 +104,7 @@ describe("ListArticleController", () => {
     });
 
     it("should be able returns error message if is not find saved articles", async () => {
-        const response = await request(app).get("/article");
+        const response = await request(app).get("/articles");
         expect(response.body.message).toBe(
             "There are no articles registered in the database!"
         );

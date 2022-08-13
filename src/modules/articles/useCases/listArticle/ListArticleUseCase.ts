@@ -4,6 +4,11 @@ import { inject, injectable } from "tsyringe";
 
 import { AppError } from "@shared/errors/AppError";
 
+interface IRequest {
+    limit: number;
+    skip: number;
+}
+
 @injectable()
 class ListArticleUseCase {
     constructor(
@@ -11,8 +16,8 @@ class ListArticleUseCase {
         private readonly articleRepository: IArticlesRepository
     ) {}
 
-    async execute(): Promise<IArticle[]> {
-        const response = await this.articleRepository.listArticle();
+    async execute({ limit, skip }: IRequest): Promise<IArticle[]> {
+        const response = await this.articleRepository.listArticle(limit, skip);
 
         if (response.length <= 0) {
             throw new AppError(

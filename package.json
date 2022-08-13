@@ -4,13 +4,19 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "tsnd -r tsconfig-paths/register --inspect=0.0.0.0:9229 --transpile-only --ignore-watch node_modules --respawn --poll src/shared/infra/http/server.ts",
-    "test": "jest --forceExit --runInBand"
+    "dev": "cross-env tsnd -r tsconfig-paths/register --inspect=0.0.0.0:9229 --transpile-only --ignore-watch node_modules --respawn --poll src/shared/infra/http/server.ts",
+    "dev:docker": "cross-env NODE_ENV=docker tsnd -r tsconfig-paths/register --inspect=0.0.0.0:9229 --transpile-only --ignore-watch node_modules --respawn --poll src/shared/infra/http/server.ts",
+    "test": "jest --runInBand --forceExit",
+    "docker:up": "docker-compose up -d",
+    "docker:stop": "docker-compose stop",
+    "docker:logs": "docker logs space-news -f"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/axios": "^0.14.0",
+    "axios": "^0.27.2",
     "class-transformer": "^0.5.1",
     "cors": "^2.8.5",
     "cross-env": "^7.0.3",
@@ -22,7 +28,8 @@
     "reflect-metadata": "^0.1.13",
     "supertest": "^6.2.4",
     "tsyringe": "^4.7.0",
-    "uuid": "^8.3.2"
+    "uuid": "^8.3.2",
+    "zod": "^3.17.10"
   },
   "devDependencies": {
     "@types/cors": "^2.8.12",

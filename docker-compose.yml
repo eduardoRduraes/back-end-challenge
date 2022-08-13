@@ -1,0 +1,29 @@
+version: '3.9'
+
+services:
+    database:
+        image: mongo:5
+        container_name: spacenews
+        restart: always
+        volumes:
+            - ./data:/data/db
+        ports:
+            -  "27017:27017"
+
+    app:
+        build: .
+        container_name: space-news
+        restart: always
+        ports:
+            - 3333:3333
+            - 9229:9229
+        volumes:
+            - .:/usr/app
+        links:
+            - database
+        depends_on:
+            - database
+
+volumes:
+    data:
+        driver: local

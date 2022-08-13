@@ -46,7 +46,7 @@ describe("Create Article Controller", () => {
 
     it("should be able to create a new article", async () => {
         const response = await request(app)
-            .post("/article")
+            .post("/articles")
             .send(makeFakeArticle);
 
         expect(response.body).toHaveProperty("id");
@@ -54,9 +54,9 @@ describe("Create Article Controller", () => {
     });
 
     it("should not be able to create a new article if already exists", async () => {
-        await request(app).post("/article").send(makeFakeArticle);
+        await request(app).post("/articles").send(makeFakeArticle);
         const response = await request(app)
-            .post("/article")
+            .post("/articles")
             .send(makeFakeArticle);
 
         expect(response.body.message).toBe("Article already exists!");

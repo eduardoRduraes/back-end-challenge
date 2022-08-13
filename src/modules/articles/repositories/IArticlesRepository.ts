@@ -33,7 +33,7 @@ interface IArticlesRepository {
         events,
     }: IArticle): Promise<IArticle>;
 
-    listArticle(): Promise<IArticle[]>;
+    listArticle(limit?: number, skip?: number): Promise<IArticle[]>;
 }
 
 export { IArticlesRepository };

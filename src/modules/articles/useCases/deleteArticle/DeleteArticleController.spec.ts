@@ -46,11 +46,11 @@ describe("Delete Article Controller", () => {
 
     it("should be able to delete an existing article", async () => {
         const article = await request(app)
-            .post("/article")
+            .post("/articles")
             .send(makeFakeArticle);
 
         const response = await request(app).delete(
-            `/article/${article.body.id}`
+            `/articles/${article.body.id}`
         );
         expect(response.body.message).toBe("Article delete success!");
         expect(response.status).toBe(201);
@@ -58,7 +58,7 @@ describe("Delete Article Controller", () => {
 
     it("should be able to return an error message when there is no article corresponding to the submitted id", async () => {
         const response = await request(app).delete(
-            `/article/${new mongoose.Types.ObjectId()}`
+            `/articles/${new mongoose.Types.ObjectId()}`
         );
 
         expect(response.body.message).toBe("Article is not exists!");

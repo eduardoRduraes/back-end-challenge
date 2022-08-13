@@ -1,6 +1,9 @@
 import mongoose from "mongoose";
 
-const uri = `mongodb://localhost:27017/spacenews`;
+const uri =
+    process.env.NODE_ENV === "docker"
+        ? `mongodb://database:27017/db`
+        : `mongodb://localhost:27017/db`;
 
 mongoose.Promise = global.Promise;
 

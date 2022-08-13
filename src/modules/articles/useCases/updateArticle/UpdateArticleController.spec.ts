@@ -47,7 +47,7 @@ describe("UpdateArticleController", () => {
 
     it("should be able to find and update data from a article in the database by id", async () => {
         const article = await request(app)
-            .post("/article")
+            .post("/articles")
             .send(makeFakeArticle);
 
         makeFakeArticle.title =
@@ -62,7 +62,7 @@ describe("UpdateArticleController", () => {
         ];
 
         const response = await request(app)
-            .put(`/article/${article.body.id}`)
+            .put(`/articles/${article.body.id}`)
             .send(makeFakeArticle);
 
         expect(response.body.title).toBe(
