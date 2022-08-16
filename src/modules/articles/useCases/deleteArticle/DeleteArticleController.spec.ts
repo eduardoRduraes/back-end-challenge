@@ -58,7 +58,7 @@ describe("Delete Article Controller", () => {
 
     it("should be able to return an error message when there is no article corresponding to the submitted id", async () => {
         const response = await request(app).delete(
-            `/articles/${new mongoose.Types.ObjectId()}`
+            `/articles/62fa426f53b64139c38ba842`
         );
 
         expect(response.body.message).toBe("Article is not exists!");

@@ -81,7 +81,7 @@ class ArticleRepositoryInMemory implements IArticlesRepository {
         return data;
     }
 
-    async listArticle(): Promise<IArticle[]> {
+    async listArticle(limit: number, skip: number): Promise<IArticle[]> {
         return this.articles as IArticle[];
     }
 }

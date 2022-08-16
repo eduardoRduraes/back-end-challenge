@@ -39,20 +39,28 @@ class ArticleRepository implements IArticlesRepository {
         return ArticleMap.toDTO(article);
     }
 
-    async findById(id: string): Promise<IArticle> {
-        const article = await this.data.findById({ _id: id });
-        return article as IArticle;
+    async findById(id: string): Promise<IArticle | null> {
+        const article = await this.data.findById({
+            _id: id,
+        });
+
+        if (!article) return null;
+
+        return ArticleMap.toDTO(article);
     }
 
-    async findByTitle(title: string): Promise<IArticle> {
-        const article: IArticle = (await this.data.findOne({
+    async findByTitle(title: string): Promise<IArticle | null> {
+        const article = await this.data.findOne<IArticle | null>({
             title,
-        })) as IArticle;
-        return article;
+        });
+
+        if (!article) return null;
+
+        return ArticleMap.toDTO(article as IArticleProps);
     }
 
     async deleteArticle(id: string): Promise<void> {
-        await this.data.deleteOne({ _id: id });
+        await this.data.findByIdAndDelete({ _id: id });
     }
 
     async updateArticle({
@@ -88,10 +96,10 @@ class ArticleRepository implements IArticlesRepository {
         return ArticleMap.toDTO(article as IArticleProps);
     }
 
-    async listArticle(limit?: number, skip?: number): Promise<IArticle[]> {
+    async listArticle(limit: number, skip: number): Promise<IArticle[]> {
         const articles: IArticle[] = await this.data
             .find()
-            .sort("publishedAt")
+            .sort({ publishedAt: -1 })
             .limit(limit as number)
             .skip(skip as number);
 

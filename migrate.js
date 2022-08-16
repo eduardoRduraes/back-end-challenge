@@ -2,7 +2,7 @@ const https = require('https')
 const { default: mongoose } = require('mongoose')
 
 const database = 'db'
-const host = 'database'
+const host = 'localhost'
 const uri = `mongodb://${host}:27017/${database}`
 console.log(uri)
 async function connect(){

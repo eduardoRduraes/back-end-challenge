@@ -14,7 +14,7 @@ class ListArticleController {
 
         const listArticleUseCase = container.resolve(ListArticleUseCase);
 
-        const articles = await listArticleUseCase.execute({ limit, skip });
+        const articles = await listArticleUseCase.execute(limit, skip);
 
         return response.status(201).json(articles);
     }

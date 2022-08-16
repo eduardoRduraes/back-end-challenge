@@ -1,6 +1,5 @@
 import { ICreateArticleDTO } from "@modules/articles/dtos/ICreateArticleDTO";
 import { ArticleRepositoryInMemory } from "@modules/articles/repositories/in-memory/ArticleRepositoryInMemory";
-import { v4 as uuidV4 } from "uuid";
 
 import { AppError } from "@shared/errors/AppError";
 
@@ -92,7 +91,7 @@ describe("List Article", () => {
         await articleRepositoryInMemory.create(makeFakeListArticles[1]);
         await articleRepositoryInMemory.create(makeFakeListArticles[2]);
 
-        const response = await listArticleUseCase.execute();
+        const response = await listArticleUseCase.execute(10, 1);
 
         expect(response).toHaveLength(3);
         expect(response[1]).toBeTruthy();
@@ -100,6 +99,8 @@ describe("List Article", () => {
     });
 
     it("should be able returns error if not there is register articles", async () => {
-        await expect(listArticleUseCase.execute()).rejects.toThrow(AppError);
+        await expect(listArticleUseCase.execute(10, 1)).rejects.toThrow(
+            AppError
+        );
     });
 });
