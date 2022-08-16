@@ -1,5 +1,4 @@
 import { IArticle } from "@modules/articles/infra/mongoose/entities/IArticle";
-import { ArticleMap } from "@modules/articles/infra/mongoose/mapper/ArticleMap";
 import { IArticlesRepository } from "@modules/articles/repositories/IArticlesRepository";
 import { inject, injectable } from "tsyringe";
 

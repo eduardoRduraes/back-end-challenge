@@ -1,0 +1,358 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Back-End Challenge Documentation",
+        "description": "Portifólio de criação de um API back-end",
+        "version": "1.0.0",
+        "contact": {
+            "name": "Eduardo R. Durães",
+            "email": "eduardodurae.bsi@gmail.com"
+        }
+    },
+    "paths":{
+        "/articles":{
+            "post":{
+                "tags":["Articles"],
+                "description": "Create a new article",
+                "summary": "create a article",
+                "requestBody":{
+                    "content":{
+                        "application/json":{
+                            "schema":{
+                                "$ref": "#/definitions/createArticle"
+                            }
+                        }
+                    }
+                },
+                "responses":{
+                    "201":{
+                        "description": "Created"
+                    },
+                    "400":{
+                        "description": "Article already exists!"
+                    }
+                }
+            },
+            "get":{
+                "tags":["Articles"],
+                "description": "List all articles",
+                "summary": "list all articles",
+                "parameters":[
+                    {
+                        "name":"limit",
+                        "in": "query",
+                        "description": "Field responsible for the limit of articles per page in the query",
+                        "required": true,
+                        "type": "number"
+                    },
+                    {
+                        "name":"skip",
+                        "in": "query",
+                        "description": "field for the query page number",
+                        "required": true,
+                        "type": "number"
+                    }
+                ],
+                "responses":{
+                    "201":{
+                        "description": "Success",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/definitions/article"
+                                    }
+
+
+                                }
+                            }
+                        }
+                    },
+                    "400":{
+                        "description": "There are no articles registered in the database!"
+                    }
+                }
+            }
+        },
+        "/articles/{id}":{
+            "get":{
+                "tags": [
+                    "Articles"
+                ],
+                "description": "Search for an article by id",
+                "summary": "search for an article by id",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "parameter responsible for the article search filter",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/definitions/article"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Article not found"
+                    }
+                }
+            },
+            "delete":{
+                "tags": [
+                    "Articles"
+                ],
+                "description": "Fetches the article by ID and removes it ",
+                "summary": "fetches the article by ID and removes it",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "parameter responsible for the article search filter",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses":{
+                    "201":{
+                        "description": "Article delete success!",
+                        "status": 200
+                    },
+                    "400":{
+                        "description": "Article is not exists!"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Articles"
+                ],
+                "description": "Updates data from an article found by id",
+                "summary": "updates data from an article found by id",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "parameter responsible for the article search filter",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "requestBody":{
+                    "content":{
+                        "application/json":{
+                            "schema":{
+                              "$ref": "#/definitions/createArticle"
+                            }
+                        }
+                    }
+                },
+                "responses":{
+                    "201":{
+                        "description":"Success",
+                        "content":{
+                            "application/json": {
+                                "schema":{
+                                    "$ref": "#/definitions/article"
+                                }
+                            }
+                        }
+                    },
+                    "400":{
+                        "description": "Article is not exists!"
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "newArticle": {
+            "type": "object",
+            "properties": {
+                "title": {
+                    "type": "string"
+                },
+                "url": {
+                    "type": "string"
+                },
+                "imageUrl": {
+                    "type": "string"
+                },
+                "newsSite": {
+                    "type": "string"
+                },
+                "summary": {
+                    "type": "string"
+                },
+                "publishedAt": {
+                    "type": "string"
+                },
+                "feature": {
+                    "type": "boolean",
+                    "default": "false",
+                    "required": false
+                },
+                "launches": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "id": {
+                                "type": "string"
+                            },
+                            "provider": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "required": false
+                },
+                "events": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "id": {
+                                "type": "string"
+                            },
+                            "provider": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "required": false
+                }
+            }
+        },
+        "article": {
+            "type": "object",
+            "properties": {
+                "title": {
+                    "type": "string"
+                },
+                "url": {
+                    "type": "string"
+                },
+                "imageUrl": {
+                    "type": "string"
+                },
+                "newsSite": {
+                    "type": "string"
+                },
+                "summary": {
+                    "type": "string"
+                },
+                "publishedAt": {
+                    "type": "string"
+                },
+                "feature": {
+                    "type": "boolean",
+                    "default": "false"
+                },
+                "launches": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "id": {
+                                "type": "string"
+                            },
+                            "provider": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                },
+                "events": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "id": {
+                                "type": "string"
+                            },
+                            "provider": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "createArticle": {
+            "type": "object",
+            "properties": {
+                "title": {
+                    "type": "string"
+                },
+                "url": {
+                    "type": "string"
+                },
+                "imageUrl": {
+                    "type": "string"
+                },
+                "newsSite": {
+                    "type": "string"
+                },
+                "summary": {
+                    "type": "string"
+                },
+                "publishedAt": {
+                    "type": "string"
+                },
+                "feature": {
+                    "type": "boolean",
+                    "default": "false"
+                },
+                "launches": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "id": {
+                                "type": "string"
+                            },
+                            "provider": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                },
+                "events": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "id": {
+                                "type": "string"
+                            },
+                            "provider": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            },
+            "example": {
+                "title": "After ICBM test, US stresses it was “not the result of current world events”",
+                "url": "https://arstechnica.com/science/2022/08/after-icbm-test-us-stresses-it-was-not-the-result-of-current-world-events/",
+                "imageUrl": "https://cdn.arstechnica.net/wp-content/uploads/2022/08/GettyImages-542365760.jpg",
+                "newsSite": "Arstechnica",
+                "summary": "Test comes after delays due to Russia, China tensions.",
+                "publishedAt": "2022-08-16T14:30:15.000Z",
+                "featured": false,
+                "launches": [],
+                "events": []
+            }
+        }
+    }
+}

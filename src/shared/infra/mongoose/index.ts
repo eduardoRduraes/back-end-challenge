@@ -1,9 +1,11 @@
+import "dotenv/config";
 import mongoose from "mongoose";
 
-const uri =
-    process.env.NODE_ENV === "docker"
-        ? `mongodb://database:27017/db`
-        : `mongodb://localhost:27017/db`;
+const docker = process.env.DOCKER_URI as string;
+const localhost = process.env.LOCALHOST_URI as string;
+// const remote = process.env.REMOTE_URI as string;
+
+const uri = process.env.NODE_ENV === "docker" ? docker : localhost;
 
 mongoose.Promise = global.Promise;
 

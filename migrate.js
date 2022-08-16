@@ -1,10 +1,10 @@
+require('dotenv').config()
+
 const https = require('https')
 const { default: mongoose } = require('mongoose')
 
-const database = 'db'
-const host = 'localhost'
-const uri = `mongodb://${host}:27017/${database}`
-console.log(uri)
+const uri = process.env.NODE === 'docker' ? process.env.DOCKER_URI : process.env.REMOTE_URI
+process.stdout.write(uri+"\n")
 async function connect(){
     mongoose.Promise = global.Promise
     await mongoose.connect(uri)
@@ -24,25 +24,36 @@ const ArticleSchema = new mongoose.Schema({
 
 const article =  mongoose.model('articles', ArticleSchema)
 let data = []
-
+let message
 async function send() {
     await connect()
     await article.insertMany(data)
     await mongoose.disconnect()
     await mongoose.connection.close()
-    console.log("artigos salvos com sucesso!")
+}
+
+async function print(args){
+    if(args === message){
+        console.log(args+"-OK!")
+        delete message
+        return
+    }
+    console.log(args)
 }
 
 const req = https.get('https://api.spaceflightnewsapi.net/v3/articles/count', res => {
-    console.log("buscando artigos!")
     let body = ""
+    message = "buscando artigos"
+    print(message)
     res.on("data", chunck => {
         body = chunck
     })
 
+
     res.on("end", () => {
         const count = Number(body.toString('ascii'))
-        console.log("total de artigos há serem migrados "+ count)
+        message = `total de artigos há serem migrados ${count}`
+        print(message)
 
         const url = `https://api.spaceflightnewsapi.net/v3/articles?_limit=${count}`
         https.get(url, async res => {
@@ -52,13 +63,15 @@ const req = https.get('https://api.spaceflightnewsapi.net/v3/articles/count', re
             })
 
             res.on("end", () => {
+                message="criando array de artigos"
                 data = JSON.parse(body)
-                console.log("array de artigos criado com sucesso!")
+                print(message)
             })
 
             res.on("close", async() => {
-                console.log("salvando artigos na base!")
+                message = "salvando artigos na base"
                 await send()
+                print(message)
             })
         })
     })

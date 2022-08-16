@@ -7,7 +7,7 @@ class MainController {
 
     async handle(request: Request, response: Response): Promise<Response> {
         const message = await this.mainUseCase.execute();
-        return response.status(201).send(message);
+        return response.status(200).send(message);
     }
 }
 
