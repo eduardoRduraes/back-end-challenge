@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "dev": "cross-env tsnd -r tsconfig-paths/register --inspect=0.0.0.0:9229 --transpile-only --ignore-watch node_modules --respawn --poll src/shared/infra/http/server.ts",
-    "dev:docker": "cross-env NODE_ENV=docker tsnd -r tsconfig-paths/register --inspect=0.0.0.0:9229 --transpile-only --ignore-watch node_modules --respawn --poll src/shared/infra/http/server.ts",
+    "dev:docker": "cross-env NODE_ENV=docker tsnd -r tsconfig-paths/register --transpile-only --ignore-watch node_modules --respawn src/shared/infra/http/server.ts",
+    "start": "cross-env tsnd -r tsconfig-paths/register --transpile-only --ignore-watch node_modules --respawn src/shared/infra/http/server.ts",
     "test": "jest --runInBand --forceExit",
     "docker:up": "docker-compose up -d",
     "docker:stop": "docker-compose stop",

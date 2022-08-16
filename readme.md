@@ -97,11 +97,16 @@ Avisar sobre a finalização e enviar para correção.
 
 ## Instruções de instalação do projeto
 
-- no cmd ou shell digite o comando "git clone https://github.com/eduardoRduraes/back-end-challenge.git" ou "git clone git@github.com:eduardoRduraes/back-end-challenge.git"
-- depois use o comando 'cd back-end-challenge' para navegar para o diretório do projeto
-- digite comando 'npm install' ou 'yarn' para instalar as dependecias do projetos
--
+- no cmd ou shell digite o comando "git clone https://github.com/eduardoRduraes/back-end-challenge.git" ou "git clone git@github.com:eduardoRduraes/back-end-challenge.git";
+- depois use o comando 'cd back-end-challenge' para navegar para o diretório do projeto;
+- caso queira testar a api localmente é necessario a instalação do mongodb ou do docker;
+- se optar por usar o docker, basta digitar o comando dentro do diretório "npm run docker:up", o comando deve instalar uma image do mongodb com node versão 16:latest;
+- se optar por instalar o mongodb localmente, basta digitar o comando dentro do diretório "npm run start", o comando deve iniciar a api;
+- caso queria usar um banco mongodb remoto por exemplo MongoDB Atlas basta configurar a variável no arquivo .env REMOTE_URI e mudar no arquivo index da pasta mongoose, descomentar a variável remote e substituir o valor de variável uri por "process.env.NODE_ENV === "docker" ? docker : localhost", depois basta seguir a opção acima;
+- lembrando que é necessario alterar o nome o arquivo .env.example para .env e inserir as urls nas respectivas variáveis;
+- as rotas são documentadas pelo swagger basta acessar a url com a api iniciada "http://localhost:3333/api-docs"
 
 ## Suporte
+email: eduardoduraes.bsi@gmail.com
+discord: 3duard0#4143
 
-Use o nosso canal no slack: http://bit.ly/32CuOMy para tirar dúvidas sobre o processo ou envie um e-mail para contato@coodesh.com.
