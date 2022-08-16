@@ -102,7 +102,7 @@ Avisar sobre a finalização e enviar para correção.
 - caso queira testar a api localmente é necessario a instalação do mongodb ou do docker;
 - se optar por usar o docker, basta digitar o comando dentro do diretório "npm run docker:up", o comando deve instalar uma image do mongodb com node versão 16:latest;
 - se optar por instalar o mongodb localmente, basta digitar o comando dentro do diretório "npm run start", o comando deve iniciar a api;
-- caso queria usar um banco mongodb remoto por exemplo MongoDB Atlas basta configurar a variável no arquivo .env REMOTE_URI e mudar no arquivo index da pasta mongoose, descomentar a variável remote e substituir o valor de variável uri por "process.env.NODE_ENV === "docker" ? docker : localhost", depois basta seguir a opção acima;
+- caso queria usar um banco mongodb remoto por exemplo MongoDB Atlas basta configurar a variável no arquivo .env REMOTE_URI e mudar no arquivo index da pasta shared/infra/mongoose/index.ts, descomentar a variável remote e substituir o valor de variável uri por "process.env.NODE_ENV === "docker" ? docker : remote", depois basta seguir a opção acima;
 - lembrando que é necessario alterar o nome o arquivo .env.example para .env e inserir as urls nas respectivas variáveis;
 - as rotas são documentadas pelo swagger basta acessar a url com a api iniciada "http://localhost:3333/api-docs"
 
