@@ -65,7 +65,7 @@ Nessa etapa você deverá construir uma API Restful com as melhores práticas de
 
 **Diferencial 2** Configurar um sistema de alerta se houver algum falha durante a sincronização dos artigos;
 
-**Diferencial 3** Descrever a documentação da API utilizando o conceito de Open API 3.0;
+**Diferencial 3** Descrever a documentação da API utilizando o conceito de Open API 3.0; ✔️
 
 **Diferencial 4** Escrever Unit Tests para os endpoints da API; ✔️
 
@@ -97,7 +97,7 @@ Avisar sobre a finalização e enviar para correção.
 
 ## Instruções de instalação do projeto
 
-- no cmd ou shell digite o comando 'git clone https://github.com/eduardoRduraes/back-end-challenge.git' ou 'git@github.com:eduardoRduraes/back-end-challenge.git'
+- no cmd ou shell digite o comando "git clone https://github.com/eduardoRduraes/back-end-challenge.git" ou "git clone git@github.com:eduardoRduraes/back-end-challenge.git"
 - depois use o comando 'cd back-end-challenge' para navegar para o diretório do projeto
 - digite comando 'npm install' ou 'yarn' para instalar as dependecias do projetos
 -
