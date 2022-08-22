@@ -3,7 +3,7 @@ require('dotenv').config()
 const https = require('https')
 const { default: mongoose } = require('mongoose')
 
-const uri = process.env.NODE === 'docker' ? process.env.DOCKER_URI : process.env.REMOTE_URI
+const uri = process.env.NODE === 'docker' ? process.env.DOCKER_URI : process.env.LOCALHOST_URI
 process.stdout.write(uri+"\n")
 async function connect(){
     mongoose.Promise = global.Promise
