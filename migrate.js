@@ -3,11 +3,9 @@ require('dotenv').config()
 const https = require('https')
 const { default: mongoose } = require('mongoose')
 
-const uri = process.env.NODE === 'docker' ? process.env.DOCKER_URI : process.env.LOCALHOST_URI
-process.stdout.write(uri+"\n")
 async function connect(){
     mongoose.Promise = global.Promise
-    await mongoose.connect(uri)
+    await mongoose.connect(process.env.DOCKER_URI)
 }
 
 const ArticleSchema = new mongoose.Schema({
@@ -24,7 +22,7 @@ const ArticleSchema = new mongoose.Schema({
 
 const article =  mongoose.model('articles', ArticleSchema)
 let data = []
-let message
+
 async function send() {
     await connect()
     await article.insertMany(data)
@@ -33,18 +31,12 @@ async function send() {
 }
 
 async function print(args){
-    if(args === message){
-        console.log(args+"-OK!")
-        delete message
-        return
-    }
-    console.log(args)
+    process.stdout.write(args+"\n")
 }
 
 const req = https.get('https://api.spaceflightnewsapi.net/v3/articles/count', res => {
     let body = ""
-    message = "buscando artigos"
-    print(message)
+    print("buscando artigos")
     res.on("data", chunck => {
         body = chunck
     })
@@ -52,8 +44,7 @@ const req = https.get('https://api.spaceflightnewsapi.net/v3/articles/count', re
 
     res.on("end", () => {
         const count = Number(body.toString('ascii'))
-        message = `total de artigos há serem migrados ${count}`
-        print(message)
+        print(`total de artigos há serem migrados ${count}`)
 
         const url = `https://api.spaceflightnewsapi.net/v3/articles?_limit=${count}`
         https.get(url, async res => {
@@ -63,15 +54,19 @@ const req = https.get('https://api.spaceflightnewsapi.net/v3/articles/count', re
             })
 
             res.on("end", () => {
-                message="criando array de artigos"
                 data = JSON.parse(body)
-                print(message)
+                print("criando array de artigos")
             })
 
             res.on("close", async() => {
-                message = "salvando artigos na base"
                 await send()
-                print(message)
+                print("salvando artigos na base")
+                print("artigos salvos")
+
+            })
+
+            res.on("exit", () => {
+                process.exit(1)
             })
         })
     })

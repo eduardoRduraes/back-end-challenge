@@ -4,21 +4,19 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "cross-env tsnd -r tsconfig-paths/register --inspect=0.0.0.0:9229 --transpile-only --ignore-watch node_modules --respawn --poll src/shared/infra/http/server.ts",
-    "dev:docker": "cross-env NODE_ENV=docker tsnd -r tsconfig-paths/register --transpile-only --ignore-watch node_modules --respawn src/shared/infra/http/server.ts",
+    "dev": "cross-env tsnd -r tsconfig-paths/register --inspect=0.0.0.0:9229 --transpile-only --ignore-watch node_modules --respawn src/shared/infra/http/server.ts",
+    "dev:docker": "cross-env NODE_ENV=docker tsnd -r tsconfig-paths/register --transpile-only --ignore-watch node_modules --respawn --poll src/shared/infra/http/server.ts",
     "start": "tsnd -r tsconfig-paths/register --transpile-only --ignore-watch node_modules --respawn src/shared/infra/http/server.ts",
     "test": "jest --runInBand --forceExit",
     "docker:up": "docker-compose up -d",
     "docker:stop": "docker-compose stop",
-    "docker:logs": "docker logs space-news -f",
-    "migrate-cron": "node migrate.js"
+    "docker:logs": "docker logs space-news -f"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@types/axios": "^0.14.0",
-    "axios": "^0.27.2",
     "class-transformer": "^0.5.1",
     "cors": "^2.8.5",
     "cross-env": "^7.0.3",
